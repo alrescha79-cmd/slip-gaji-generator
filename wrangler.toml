@@ -1,6 +1,0 @@
-#:schema https://raw.githubusercontent.com/cloudflare/workers-sdk/main/packages/wrangler/config-schema.json
-name = "slip-gaji-generator"
-compatibility_date = "2024-04-03"
-compatibility_flags = ["nodejs_compat"]
-
-pages_build_output_dir = ".svelte-kit/cloudflare"
