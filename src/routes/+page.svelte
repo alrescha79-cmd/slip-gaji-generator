@@ -79,7 +79,7 @@
     );
 
     async function handleDownload() {
-        const elementId = "payslip-container";
+        const elementId = "payslip-wrapper";
         const fileName = `Slip_Gaji_${employee.name.replace(/\s+/g, "_")}_${result.period.replace(/\s+/g, "_")}.pdf`;
         await generatePdf(elementId, fileName, meta.paperSize);
     }

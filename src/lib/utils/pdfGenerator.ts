@@ -3,49 +3,72 @@ import jsPDF from 'jspdf';
 import type { PaperSize } from '../types';
 
 export async function generatePdf(elementId: string, fileName: string = 'payslip.pdf', paperSize: PaperSize = 'A4') {
-    const element = document.getElementById(elementId);
-    if (!element) {
+    const container = document.getElementById(elementId);
+    if (!container) {
         console.error(`Element with id ${elementId} not found`);
         return;
     }
-
     try {
-        const dataUrl = await toJpeg(element, {
-            quality: 0.95,
-            backgroundColor: '#ffffff',
-            pixelRatio: 3.5,
-            style: {
-                transform: 'none',
-                margin: '0',
-                left: '0',
-                top: '0',
-                boxShadow: 'none',
-                filter: 'none'
-            }
-        });
+        let pdfFormat: string | [number, number] = paperSize.toLowerCase();
+        let widthMm = 210;
+        let heightMm = 297;
 
-        let format: string | [number, number] = paperSize.toLowerCase();
         if (paperSize === 'F4') {
-            format = [215, 330];
+            widthMm = 215;
+            heightMm = 330;
+            pdfFormat = [215, 330];
         } else if (paperSize === 'Legal') {
-            format = 'legal';
-        } else {
-            format = 'a4';
+            widthMm = 216;
+            heightMm = 356;
+            pdfFormat = 'legal';
         }
 
-        const pdf = new jsPDF({
-            orientation: 'portrait',
-            unit: 'mm',
-            format: format,
-            compress: true
-        });
+        // 1mm = 3.78px approximately
+        const scale = 4; // Higher scale for better quality
+        const pixelWidth = Math.floor(widthMm * 3.78 * scale);
+        const pixelHeight = Math.floor(heightMm * 3.78 * scale);
 
-        const imgProps = pdf.getImageProperties(dataUrl);
-        const pdfWidth = pdf.internal.pageSize.getWidth();
-        const pdfHeight = (imgProps.height * pdfWidth) / imgProps.width;
+        const pages = container.querySelectorAll('.payslip-page');
+        const elementsToCapture = pages.length > 0 ? Array.from(pages) : [container];
 
-        pdf.addImage(dataUrl, 'JPEG', 0, 0, pdfWidth, pdfHeight, undefined, 'FAST');
-        pdf.save(fileName);
+        let pdf: jsPDF | null = null;
+
+        for (let i = 0; i < elementsToCapture.length; i++) {
+            const el = elementsToCapture[i] as HTMLElement;
+
+            const dataUrl = await toJpeg(el, {
+                quality: 0.98,
+                backgroundColor: '#ffffff',
+                width: pixelWidth,
+                height: pixelHeight,
+                style: {
+                    transform: `scale(${scale})`,
+                    transformOrigin: 'top left',
+                    width: `${widthMm}mm`,
+                    height: `${heightMm}mm`,
+                    margin: '0',
+                    left: '0',
+                    top: '0',
+                    boxShadow: 'none',
+                    filter: 'none'
+                }
+            });
+
+            if (i === 0) {
+                pdf = new jsPDF({
+                    orientation: 'portrait',
+                    unit: 'mm',
+                    format: pdfFormat,
+                    compress: true
+                });
+            } else {
+                pdf?.addPage(pdfFormat, 'portrait');
+            }
+
+            pdf?.addImage(dataUrl, 'JPEG', 0, 0, widthMm, heightMm, undefined, 'FAST');
+        }
+
+        pdf?.save(fileName);
     } catch (error) {
         console.error('Error generating PDF:', error);
     }
