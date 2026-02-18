@@ -1,13 +1,11 @@
-# IT Payslip Generator 🇮🇩
+# Payslip Generator 🇮🇩
 
-Aplikasi web modern untuk manajemen dan pembuatan slip gaji karyawan yang dioptimalkan untuk industri IT di Indonesia. Aplikasi ini memungkinkan Anda untuk menginput detail perusahaan, data karyawan, kehadiran, dan komponen gaji untuk menghasilkan slip gaji PDF profesional yang siap cetak.
+A modern, professional, and high-quality payslip generator tailored for Indonesia.
 
-## ✨ Fitur Utama
+## Features
 
-- **Live Preview**: Lihat perubahan slip gaji secara langsung saat Anda menginput data.
-- **Perhitungan Otomatis**:
-  - **Pajak (PPh 21)**: Menggunakan skema TER (Tarif Efektif Rata-rata) terbaru 2024.
-  - **BPJS**: Perhitungan otomatis BPJS Kesehatan dan Ketenagakerjaan (JKK, JKM, JHT, JP).
+- **Professional Design**: Clean and structured payslip layout.
+- **Tax & Benefit Calculations**: Automated PPh 21 (TER), BPJS Kesehatan, and BPJS Ketenagakerjaan (JHT, JP, JKK, JKM).
   - **Lembur**: Perhitungan otomatis berdasarkan gaji pokok atau tarif kustom per jam.
   - **Kehadiran**: Kalkulasi otomatis hari hadir berdasarkan data ketidakhadiran (sakit, izin, cuti, alpha).
 - **Ekspor PDF Berkualitas**:

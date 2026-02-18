@@ -40,9 +40,12 @@ export interface Attendance {
     customOvertimeRate?: number; // Custom rate per jam
 }
 
+export type PaperSize = 'A4' | 'F4' | 'Legal';
+
 export interface PayslipMeta {
     period: string; // YYYY-MM
     issuanceDate: string; // YYYY-MM-DD
+    paperSize: PaperSize;
 }
 
 

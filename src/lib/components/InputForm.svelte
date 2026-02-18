@@ -42,22 +42,6 @@
     }
 
     $effect(() => {
-        if (employee.joinDate) {
-            const year = employee.joinDate.split("-")[0];
-            const currentId = employee.id;
-            const match = currentId.match(/^(.*-)(\d{4})(-\d+)$/);
-
-            if (match) {
-                const newId = `${match[1]}${year}${match[3]}`;
-                if (employee.id !== newId) {
-                    employee.id = newId;
-                }
-            } else if (!currentId || currentId === "EMP-XXXX-XXX") {
-                employee.id = `EMP-${year}-001`;
-            }
-        }
-    });
-    $effect(() => {
         if (attendance.workingDays !== undefined) {
             const absent =
                 (attendance.sick || 0) +
@@ -159,6 +143,19 @@
                         class="input input-bordered w-full"
                     />
                 </label>
+                <label class="form-control w-full">
+                    <div class="label">
+                        <span class="label-text">Ukuran Kertas PDF</span>
+                    </div>
+                    <select
+                        bind:value={meta.paperSize}
+                        class="select select-bordered"
+                    >
+                        <option value="A4">A4 (210 x 297 mm)</option>
+                        <option value="F4">F4 (215 x 330 mm)</option>
+                        <option value="Legal">Legal (216 x 356 mm)</option>
+                    </select>
+                </label>
             </div>
         </div>
     </div>
@@ -180,6 +177,17 @@
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <label class="form-control w-full">
                     <div class="label">
+                        <span class="label-text">Id Karyawan</span>
+                    </div>
+                    <input
+                        type="text"
+                        bind:value={employee.id}
+                        class="input input-bordered w-full"
+                        placeholder="Contoh: EMP-2024-001"
+                    />
+                </label>
+                <label class="form-control w-full">
+                    <div class="label">
                         <span class="label-text">Position</span>
                     </div>
                     <input
@@ -188,6 +196,8 @@
                         class="input input-bordered w-full"
                     />
                 </label>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <label class="form-control w-full">
                     <div class="label">
                         <span class="label-text">Department</span>
@@ -195,6 +205,16 @@
                     <input
                         type="text"
                         bind:value={employee.department}
+                        class="input input-bordered w-full"
+                    />
+                </label>
+                <label class="form-control w-full">
+                    <div class="label">
+                        <span class="label-text">Join Date</span>
+                    </div>
+                    <input
+                        type="date"
+                        bind:value={employee.joinDate}
                         class="input input-bordered w-full"
                     />
                 </label>
@@ -231,16 +251,6 @@
                     </select>
                 </label>
             </div>
-            <label class="form-control w-full">
-                <div class="label">
-                    <span class="label-text">Join Date</span>
-                </div>
-                <input
-                    type="date"
-                    bind:value={employee.joinDate}
-                    class="input input-bordered w-full"
-                />
-            </label>
         </div>
     </div>
 

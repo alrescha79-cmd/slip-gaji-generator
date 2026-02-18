@@ -1,7 +1,8 @@
 import { toJpeg } from 'html-to-image';
 import jsPDF from 'jspdf';
+import type { PaperSize } from '../types';
 
-export async function generatePdf(elementId: string, fileName: string = 'payslip.pdf') {
+export async function generatePdf(elementId: string, fileName: string = 'payslip.pdf', paperSize: PaperSize = 'A4') {
     const element = document.getElementById(elementId);
     if (!element) {
         console.error(`Element with id ${elementId} not found`);
@@ -9,17 +10,35 @@ export async function generatePdf(elementId: string, fileName: string = 'payslip
     }
 
     try {
-        // Optimizing PDF size: Using toJpeg with 0.8 quality and 2.0 pixelRatio
+        // Optimizing PDF size
         const dataUrl = await toJpeg(element, {
-            quality: 0.8,
+            quality: 0.95,
             backgroundColor: '#ffffff',
-            pixelRatio: 2.0 // High enough for print, low enough for size
+            pixelRatio: 3.5, // High resolution for clear text
+            style: {
+                transform: 'none',
+                margin: '0',
+                left: '0',
+                top: '0',
+                boxShadow: 'none',
+                filter: 'none'
+            }
         });
+
+        // Map paper size to jsPDF format
+        let format: string | [number, number] = paperSize.toLowerCase();
+        if (paperSize === 'F4') {
+            format = [215, 330]; // Indonesian F4
+        } else if (paperSize === 'Legal') {
+            format = 'legal';
+        } else {
+            format = 'a4';
+        }
 
         const pdf = new jsPDF({
             orientation: 'portrait',
             unit: 'mm',
-            format: 'legal',
+            format: format,
             compress: true
         });
 

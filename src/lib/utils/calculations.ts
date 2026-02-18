@@ -2,8 +2,9 @@ import type { Employee, PayrollResult, SalaryComponent } from '../types';
 import { calculateBpjs } from './bpjs';
 import { getTerCategory, getTerRate } from './ter';
 
-export function calculatePayroll(employee: Employee, components: SalaryComponent[], attendance?: import('../types').Attendance): PayrollResult {
-    const period = new Date().toLocaleDateString('id-ID', { month: 'long', year: 'numeric' });
+export function calculatePayroll(employee: Employee, components: SalaryComponent[], attendance?: import('../types').Attendance, periodInput?: string): PayrollResult {
+    const periodDate = periodInput ? new Date(periodInput + '-01') : new Date();
+    const period = periodDate.toLocaleDateString('id-ID', { month: 'long', year: 'numeric' });
 
     // 1. Calculate Gross Salary components
     const basicSalary = employee.basicSalary;
