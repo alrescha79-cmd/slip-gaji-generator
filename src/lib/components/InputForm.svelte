@@ -22,6 +22,8 @@
         meta: PayslipMeta;
     }>();
 
+    let fileInput: HTMLInputElement;
+
     function addComponent(type: "allowance" | "deduction") {
         salaryComponents = [
             ...salaryComponents,
@@ -30,7 +32,7 @@
                 name: type === "allowance" ? "New Allowance" : "New Deduction",
                 amount: 0,
                 type,
-                isTaxable: type === "allowance", // Allowances usually taxable
+                isTaxable: type === "allowance",
             },
         ];
     }
@@ -104,14 +106,81 @@
             </div>
             <label class="form-control w-full">
                 <div class="label">
-                    <span class="label-text">Logo URL</span>
+                    <span class="label-text">Logo Perusahaan (Link URL)</span>
                 </div>
                 <input
                     type="text"
                     bind:value={company.logo}
                     class="input input-bordered w-full"
-                    placeholder="https://..."
+                    placeholder="https://slip-gaji-cakson.my.id/logo.png"
                 />
+                {#if company.hasLogoError && company.logo && company.logo.startsWith("http")}
+                    <div class="label pt-1 pb-0">
+                        <span
+                            class="label-text-alt text-error font-light text-xs whitespace-normal leading-tight"
+                            >* Gagal mendapatkan gambar, gunakan upload manual!</span
+                        >
+                    </div>
+                {/if}
+            </label>
+
+            <div class="divider text-xs opacity-50 uppercase mt-2">Atau</div>
+
+            <label class="form-control w-full">
+                <div class="label flex justify-between items-end">
+                    <span class="label-text">Upload Logo Manual (Lokal)</span>
+                    {#if company.logo}
+                        <button
+                            class="btn btn-link btn-xs text-error no-underline hover:no-underline p-0 h-auto min-h-0"
+                            onclick={() => {
+                                company.logo = "";
+                                company.hasLogoError = false;
+                                if (fileInput) fileInput.value = "";
+                            }}
+                        >
+                            <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                width="12"
+                                height="12"
+                                viewBox="0 0 24 24"
+                                fill="none"
+                                stroke="currentColor"
+                                stroke-width="2"
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                class="mr-1"
+                                ><path d="M3 6h18" /><path
+                                    d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"
+                                /><path
+                                    d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"
+                                /></svg
+                            >
+                            Hapus Logo
+                        </button>
+                    {/if}
+                </div>
+                <input
+                    type="file"
+                    accept="image/*"
+                    bind:this={fileInput}
+                    class="file-input file-input-bordered file-input-primary w-full"
+                    onchange={(e) => {
+                        const file = e.currentTarget.files?.[0];
+                        if (file) {
+                            const reader = new FileReader();
+                            reader.onload = (ev) => {
+                                company.logo = ev.target?.result as string;
+                                company.hasLogoError = false;
+                            };
+                            reader.readAsDataURL(file);
+                        }
+                    }}
+                />
+                <div class="label">
+                    <span class="label-text-alt opacity-70"
+                        >Disimpan sementara di browser saja.</span
+                    >
+                </div>
             </label>
         </div>
     </div>

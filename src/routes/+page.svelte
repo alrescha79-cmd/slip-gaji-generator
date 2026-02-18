@@ -18,7 +18,8 @@
         address: "Gedung Cyber 2, Jl. HR Rasuna Said Blok X-5 No. 13",
         city: "Jakarta Selatan",
         postalCode: "12950",
-        logo: "/logo.png",
+        logo: "",
+        hasLogoError: false,
     });
 
     let employee = $state<Employee>({
@@ -69,7 +70,7 @@
     let meta = $state<PayslipMeta>({
         period: new Date().toISOString().slice(0, 7), // YYYY-MM
         issuanceDate: new Date().toISOString().slice(0, 10), // YYYY-MM-DD
-        paperSize: "Legal",
+        paperSize: "F4",
     });
 
     // Derived Calculation
@@ -159,7 +160,7 @@
         <!-- Preview Area -->
         <div class="space-y-4">
             <div
-                class="flex flex-wrap justify-between items-center bg-base-100 p-4 rounded-box shadow gap-4"
+                class="flex flex-wrap justify-center sm:justify-between items-center bg-base-100 p-4 rounded-box shadow gap-4 text-center sm:text-left"
             >
                 <div class="flex items-center gap-2">
                     <h2 class="text-xl font-bold">Live Preview</h2>

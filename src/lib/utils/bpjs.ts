@@ -1,6 +1,6 @@
 export const BPJS_LIMITS_2024 = {
     KESEHATAN: 12000000,
-    JP: 10042300, // March 2024
+    JP: 10042300,
 };
 
 export const BPJS_RATES = {
@@ -13,7 +13,6 @@ export const BPJS_RATES = {
         EMPLOYER: 0.037,
     },
     JKK: {
-        // Range 0.24% - 1.74%. taking lowest for office/IT
         EMPLOYER_LOW: 0.0024,
     },
     JKM: {
@@ -26,13 +25,11 @@ export const BPJS_RATES = {
 };
 
 export function calculateBpjs(grossSalary: number) {
-    // BPJS Kesehatan
     const kesehatanBase = Math.min(grossSalary, BPJS_LIMITS_2024.KESEHATAN);
     const kesehatanEmployee = kesehatanBase * BPJS_RATES.KESEHATAN.EMPLOYEE;
     const kesehatanEmployer = kesehatanBase * BPJS_RATES.KESEHATAN.EMPLOYER;
 
-    // BPJS Ketenagakerjaan
-    const jhtBase = grossSalary; // No limit
+    const jhtBase = grossSalary;
     const jhtEmployee = jhtBase * BPJS_RATES.JHT.EMPLOYEE;
     const jhtEmployer = jhtBase * BPJS_RATES.JHT.EMPLOYER;
 

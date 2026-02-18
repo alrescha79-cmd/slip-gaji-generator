@@ -10,11 +10,10 @@ export async function generatePdf(elementId: string, fileName: string = 'payslip
     }
 
     try {
-        // Optimizing PDF size
         const dataUrl = await toJpeg(element, {
             quality: 0.95,
             backgroundColor: '#ffffff',
-            pixelRatio: 3.5, // High resolution for clear text
+            pixelRatio: 3.5,
             style: {
                 transform: 'none',
                 margin: '0',
@@ -25,10 +24,9 @@ export async function generatePdf(elementId: string, fileName: string = 'payslip
             }
         });
 
-        // Map paper size to jsPDF format
         let format: string | [number, number] = paperSize.toLowerCase();
         if (paperSize === 'F4') {
-            format = [215, 330]; // Indonesian F4
+            format = [215, 330];
         } else if (paperSize === 'Legal') {
             format = 'legal';
         } else {

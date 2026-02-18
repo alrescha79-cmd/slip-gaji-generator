@@ -14,13 +14,10 @@ export function getTerCategory(maritalStatus: string): TerCategory {
         case 'K/3':
             return 'C';
         default:
-            return 'A'; // Default to A
+            return 'A';
     }
 }
 
-// Simplified ranges representing common IT salaries.
-// Full table has many small increments.
-// This function returns the rate (e.g., 0.05 for 5%)
 export function getTerRate(grossIncome: number, category: TerCategory): number {
     if (category === 'A') {
         if (grossIncome <= 5400000) return 0;
@@ -52,7 +49,7 @@ export function getTerRate(grossIncome: number, category: TerCategory): number {
         if (grossIncome <= 47800000) return 0.17;
         if (grossIncome <= 51400000) return 0.18;
         if (grossIncome <= 56300000) return 0.19;
-        return 0.20; // Simplified max for MVP
+        return 0.20;
     } else if (category === 'B') {
         if (grossIncome <= 6200000) return 0;
         if (grossIncome <= 6500000) return 0.0025;
@@ -64,8 +61,8 @@ export function getTerRate(grossIncome: number, category: TerCategory): number {
         if (grossIncome <= 9750000) return 0.0175;
         if (grossIncome <= 10600000) return 0.02;
         if (grossIncome <= 11400000) return 0.03;
-        return 0.12; // Simplified
-    } else { // C
+        return 0.12;
+    } else {
         if (grossIncome <= 6600000) return 0;
         if (grossIncome <= 6950000) return 0.0025;
         if (grossIncome <= 7350000) return 0.005;
@@ -74,6 +71,6 @@ export function getTerRate(grossIncome: number, category: TerCategory): number {
         if (grossIncome <= 9000000) return 0.0125;
         if (grossIncome <= 9650000) return 0.015;
         if (grossIncome <= 10350000) return 0.0175;
-        return 0.10; // Simplified
+        return 0.10;
     }
 }

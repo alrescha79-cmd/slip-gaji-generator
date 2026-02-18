@@ -38,24 +38,22 @@
     });
 
     const dims = $derived(paperDimensions());
-    // Convert mm to pixels (roughly 3.78 pixels per mm at 96 DPI)
     const paperWidthPx = $derived(dims.width * 3.78);
     const paperHeightPx = $derived(dims.height * 3.78);
 
     let zoom = $state(1.0);
 
-    // Auto-adjust zoom to fit screen width on mobile
     $effect(() => {
         if (typeof window !== "undefined") {
             const handleResize = () => {
                 const screenWidth = window.innerWidth;
-                const containerPadding = 32; // Total horizontal padding
+                const containerPadding = 32; 
                 const availableWidth = screenWidth - containerPadding;
 
                 if (availableWidth < paperWidthPx) {
                     zoom = Number((availableWidth / paperWidthPx).toFixed(2));
                 } else if (screenWidth < 1280) {
-                    zoom = 0.85; // Fit better in the split view on medium screens
+                    zoom = 0.85;
                 } else {
                     zoom = 1.0;
                 }
@@ -113,7 +111,7 @@
                 class="bg-white relative overflow-hidden shadow-2xl payslip-content"
                 id="payslip-container"
                 data-theme="light"
-                style="width: {dims.width}mm; min-height: {dims.height}mm; padding: 25mm; transform: scale({zoom}); transform-origin: top left;"
+                style="width: {dims.width}mm; min-height: {dims.height}mm; padding: 25mm; transform: scale({zoom}); transform-origin: top left; font-family: ui-sans-serif, Inter, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;"
             >
                 <!-- Tiled Watermark -->
                 <div
@@ -129,19 +127,27 @@
                         class="flex justify-between items-start border-b-2 border-primary pb-4 mb-8 gap-8"
                     >
                         <div class="flex gap-4 items-center flex-1">
-                            {#if company.logo}
-                                <img
-                                    src={company.logo}
-                                    alt="Company Logo"
-                                    class="w-16 h-16 object-contain"
-                                />
-                            {:else}
-                                <div
-                                    class="w-16 h-16 bg-neutral text-neutral-content grid place-items-center font-bold text-2xl rounded"
-                                >
-                                    {company.name.charAt(0)}
-                                </div>
-                            {/if}
+                            <img
+                                src={company.logo || "/logo.png"}
+                                alt="Company Logo"
+                                class="w-16 h-16 object-contain rounded-md"
+                                crossorigin={company.logo?.startsWith("http")
+                                    ? "anonymous"
+                                    : undefined}
+                                onload={() => (company.hasLogoError = false)}
+                                onerror={(e) => {
+                                    const target =
+                                        e.currentTarget as HTMLImageElement;
+                                    if (
+                                        target.src !==
+                                        window.location.origin + "/logo.png"
+                                    ) {
+                                        company.hasLogoError = true;
+                                        target.removeAttribute("crossorigin");
+                                        target.src = "/logo.png";
+                                    }
+                                }}
+                            />
                             <div class="flex-1">
                                 <h1 class="text-2xl font-bold">
                                     {company.name}

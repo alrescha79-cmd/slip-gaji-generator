@@ -1,6 +1,7 @@
 export interface Company {
     name: string;
     logo?: string;
+    hasLogoError?: boolean;
     address: string;
     city: string;
     postalCode: string;
@@ -15,14 +16,14 @@ export interface Employee {
     name: string;
     position: string;
     department: string;
-    joinDate: string; // YYYY-MM-DD
+    joinDate: string;
     status: 'permanent' | 'contract';
     maritalStatus: MaritalStatus;
     basicSalary: number;
 }
 
 export interface SalaryComponent {
-    id: string; // Add ID for UI handling
+    id: string;
     name: string;
     amount: number;
     type: 'allowance' | 'deduction' | 'benefit';
@@ -30,33 +31,33 @@ export interface SalaryComponent {
 }
 
 export interface Attendance {
-    workingDays: number; // Hari Kerja Efektif
-    present: number;     // Hari Hadir
-    sick: number;        // Sakit
-    permission: number;  // Izin
-    leave: number;       // Cuti
-    alpha: number;       // Alpha
-    overtimeHours: number;// Lembur (Jam)
-    customOvertimeRate?: number; // Custom rate per jam
+    workingDays: number;
+    present: number;
+    sick: number;
+    permission: number;
+    leave: number;
+    alpha: number;
+    overtimeHours: number;
+    customOvertimeRate?: number;
 }
 
 export type PaperSize = 'A4' | 'F4' | 'Legal';
 
 export interface PayslipMeta {
-    period: string; // YYYY-MM
-    issuanceDate: string; // YYYY-MM-DD
+    period: string;
+    issuanceDate: string;
     paperSize: PaperSize;
 }
 
 
 export interface PayrollResult {
-    period: string; // Month Year
+    period: string;
     grossIncome: number;
     totalAllowances: number;
     totalDeductions: number;
     takeHomePay: number;
     components: SalaryComponent[];
-    tax: number; // PPh 21
+    tax: number;
     bpjsKesehatan: number;
     bpjsKetenagakerjaan: number;
     attendance?: Attendance;
