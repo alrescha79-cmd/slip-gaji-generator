@@ -2,7 +2,7 @@ import { toJpeg } from 'html-to-image';
 import jsPDF from 'jspdf';
 import type { PaperSize } from '../types';
 
-export async function generatePdf(elementId: string, fileName: string = 'payslip.pdf', paperSize: PaperSize = 'A4') {
+export async function generatePdf(elementId: string, fileName: string = 'payslip.pdf', paperSize: PaperSize = 'A4', orientation: 'portrait' | 'landscape' = 'portrait') {
     const container = document.getElementById(elementId);
     if (!container) {
         console.error(`Element with id ${elementId} not found`);
@@ -21,6 +21,12 @@ export async function generatePdf(elementId: string, fileName: string = 'payslip
             widthMm = 216;
             heightMm = 356;
             pdfFormat = 'legal';
+        }
+
+        if (orientation === 'landscape') {
+            const temp = widthMm;
+            widthMm = heightMm;
+            heightMm = temp;
         }
 
         // 1mm = 3.78px approximately
@@ -56,13 +62,13 @@ export async function generatePdf(elementId: string, fileName: string = 'payslip
 
             if (i === 0) {
                 pdf = new jsPDF({
-                    orientation: 'portrait',
+                    orientation: orientation,
                     unit: 'mm',
                     format: pdfFormat,
                     compress: true
                 });
             } else {
-                pdf?.addPage(pdfFormat, 'portrait');
+                pdf?.addPage(pdfFormat, orientation);
             }
 
             pdf?.addImage(dataUrl, 'JPEG', 0, 0, widthMm, heightMm, undefined, 'FAST');

@@ -244,6 +244,22 @@
                 </label>
                 <label class="form-control w-full">
                     <div class="label">
+                        <span class="label-text">Design Template</span>
+                    </div>
+                    <select
+                        bind:value={meta.template}
+                        class="select select-bordered"
+                    >
+                        <option value="modern">Modern (Default)</option>
+                        <option value="classic">Classic (Wet Signature)</option>
+                        <option value="compact">Compact (Receipt)</option>
+                        <option value="landscape"
+                            >Landscape (Side-by-Side)</option
+                        >
+                    </select>
+                </label>
+                <label class="form-control w-full">
+                    <div class="label">
                         <span class="label-text">Ukuran Kertas PDF</span>
                     </div>
                     <select

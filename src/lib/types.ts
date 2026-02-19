@@ -43,10 +43,13 @@ export interface Attendance {
 
 export type PaperSize = 'A4' | 'F4' | 'Legal';
 
+export type PayslipTemplate = 'modern' | 'classic' | 'compact' | 'landscape';
+
 export interface PayslipMeta {
     period: string;
     issuanceDate: string;
     paperSize: PaperSize;
+    template: PayslipTemplate;
 }
 
 
