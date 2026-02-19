@@ -43,6 +43,36 @@
         );
     }
 
+    function moveComponent(id: string, direction: "up" | "down") {
+        const index = salaryComponents.findIndex(
+            (c: SalaryComponent) => c.id === id,
+        );
+        if (index === -1) return;
+
+        const type = salaryComponents[index].type;
+        const sameTypeIndices = salaryComponents
+            .map((c: SalaryComponent, i: number) => (c.type === type ? i : -1))
+            .filter((i: number) => i !== -1);
+
+        const relativeIndex = sameTypeIndices.indexOf(index);
+        const targetRelativeIndex =
+            direction === "up" ? relativeIndex - 1 : relativeIndex + 1;
+
+        if (
+            targetRelativeIndex < 0 ||
+            targetRelativeIndex >= sameTypeIndices.length
+        )
+            return;
+
+        const targetIndex = sameTypeIndices[targetRelativeIndex];
+
+        const newComponents = [...salaryComponents];
+        const temp = newComponents[index];
+        newComponents[index] = newComponents[targetIndex];
+        newComponents[targetIndex] = temp;
+        salaryComponents = newComponents;
+    }
+
     $effect(() => {
         if (attendance.workingDays !== undefined) {
             const absent =
@@ -57,7 +87,7 @@
 
 <div class="space-y-6 p-4 bg-base-100 rounded-box shadow-lg">
     <div class="collapse collapse-arrow bg-base-200">
-        <input type="radio" name="my-accordion-2" checked />
+        <input type="checkbox" checked />
         <div class="collapse-title text-xl font-medium">Company Details</div>
         <div class="collapse-content space-y-4">
             <label class="form-control w-full">
@@ -186,7 +216,7 @@
     </div>
 
     <div class="collapse collapse-arrow bg-base-200">
-        <input type="radio" name="my-accordion-2" />
+        <input type="checkbox" />
         <div class="collapse-title text-xl font-medium">Payslip Details</div>
         <div class="collapse-content space-y-4">
             <div class="grid grid-cols-1 gap-4">
@@ -230,7 +260,7 @@
     </div>
 
     <div class="collapse collapse-arrow bg-base-200">
-        <input type="radio" name="my-accordion-2" />
+        <input type="checkbox" />
         <div class="collapse-title text-xl font-medium">Employee Details</div>
         <div class="collapse-content space-y-4">
             <label class="form-control w-full">
@@ -324,7 +354,7 @@
     </div>
 
     <div class="collapse collapse-arrow bg-base-200">
-        <input type="radio" name="my-accordion-2" />
+        <input type="checkbox" />
         <div class="collapse-title text-xl font-medium">
             Attendance (Kehadiran)
         </div>
@@ -424,7 +454,7 @@
     </div>
 
     <div class="collapse collapse-arrow bg-base-200">
-        <input type="radio" name="my-accordion-2" />
+        <input type="checkbox" />
         <div class="collapse-title text-xl font-medium">Salary Details</div>
         <div class="collapse-content space-y-4">
             <label class="form-control w-full">
@@ -461,6 +491,44 @@
                             class="input input-bordered input-sm w-full"
                         />
                     </label>
+                    <div class="flex flex-col gap-0.5 pr-1">
+                        <button
+                            class="btn btn-square btn-xs btn-ghost h-4 min-h-0 w-6"
+                            onclick={() => moveComponent(component.id, "up")}
+                            title="Pindah ke atas"
+                        >
+                            <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                width="10"
+                                height="10"
+                                viewBox="0 0 24 24"
+                                fill="none"
+                                stroke="currentColor"
+                                stroke-width="3"
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                ><path d="m18 15-6-6-6 6" /></svg
+                            >
+                        </button>
+                        <button
+                            class="btn btn-square btn-xs btn-ghost h-4 min-h-0 w-6"
+                            onclick={() => moveComponent(component.id, "down")}
+                            title="Pindah ke bawah"
+                        >
+                            <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                width="10"
+                                height="10"
+                                viewBox="0 0 24 24"
+                                fill="none"
+                                stroke="currentColor"
+                                stroke-width="3"
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                ><path d="m6 9 6 6 6-6" /></svg
+                            >
+                        </button>
+                    </div>
                     <button
                         class="btn btn-square btn-sm btn-error"
                         onclick={() => removeComponent(component.id)}>X</button

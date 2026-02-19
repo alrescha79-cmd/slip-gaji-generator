@@ -478,7 +478,7 @@
                                         </h3>
                                     {:else if row.type === "item"}
                                         <div
-                                            class="flex justify-between py-1 {row.color ===
+                                            class="flex justify-between items-start py-1.5 leading-tight {row.color ===
                                             'error'
                                                 ? 'text-error'
                                                 : ''}"
